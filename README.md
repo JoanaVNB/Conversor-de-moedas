@@ -6,6 +6,8 @@ API Rest para conversão de moedas, com restrição para as seguintes:
 * De Real para Euro; De Euro para Real;
 * De BTC para Dolar; De BTC para Real;
 
+Utilize docker-compose up -d. Após os containers estarem de pé, execute a aplicação com go run main.go . 
+
 ## Requisitos:
 **Banco de dados**: salvar os dados no banco de dados MySQL e criar uma rotina para salvar o dados para consultas futuras:
 Para isto foi criado o diretório "repository", em que foi utilizado o framework ORM de Golang, Gorm, e onde contém os códigos para:
@@ -16,7 +18,7 @@ Para isto foi criado o diretório "repository", em que foi utilizado o framework
 * por todos os dados cadastrados; e
 * para detelar.
 
-Para criação de **rotina de armazenamento** de dados, foi utilizado o cron, em que os dados são salvos, com intervalo de 1 minuto, a partir do retorno da url: http://localhost:8000/exchange/10/BRL/USD/4.50 no arquivo "dados.csv" e são apagados do banco de dados logo após o armazenamento no arquivo, para evitar dados não-realistas.
+Para criação de **rotina de armazenamento** de dados, foi utilizado o cron, em que os dados são salvos, com intervalo de 1 minuto, a partir do retorno da url: http://localhost:8000/exchange/10/BRL/USD/4.50 no arquivo "dados.csv" e são apagados do banco de dados logo após o armazenamento no arquivo, para evitar dados não-realistas. Tentei buscar também com ElasticSearch, mas não consegui arrumar a tempo.
 
 O armazenamento no arquivo foi feito a partir do que era esperado como mensagem de retorno:
 
