@@ -1,59 +1,70 @@
 package elasticSearch
 
 import (
-	"exchange/presenter"
 	"bufio"
 	"context"
-	"encoding/json"
 	"fmt"
 	"os"
 	"sync"
+	"strings"
 )
 
 func LoadDatasFromFile(ctx context.Context) context.Context {
-const (
-	concurrency = 5
-	usersFile  = "dados.csv"
-)
+	const (
+			concurrency = 5
+			usersFile   = "dados.csv"
+	)
 
-var (
-	datas    []presenter.Presenter
-	waitGroup = new(sync.WaitGroup)
-	workQueue = make(chan string)
-	mutex     = &sync.Mutex{}
-)
-
-go func() {
-	usersFile, err := os.Open(usersFile)
-	if err != nil {
-		panic(err)
+	type GetPresenter struct{
+		ValorConvertido	string `json:"valorConvertido"`
+		SimboloMoeda	string	`json:"simboloMoeda"`
 	}
-	defer usersFile.Close()
-	scanner := bufio.NewScanner(usersFile)
-	for scanner.Scan() {
-		workQueue <- scanner.Text()
-	}
-	close(workQueue)
-}()
 
-var data presenter.Presenter
-for i := 0; i < concurrency; i++ {
-	waitGroup.Add(1)
-	go func(workQueue chan string, waitGroup *sync.WaitGroup) {
-		for entry := range workQueue {
-			err := json.Unmarshal([]byte(entry), &data)
-			if err == nil {
-				mutex.Lock()
-				datas = append(datas, data)
-				mutex.Unlock()
+	var (
+			datas     []GetPresenter
+			waitGroup = new(sync.WaitGroup)
+			workQueue = make(chan string)
+			mutex     = &sync.Mutex{}
+	)
+
+	go func() {
+			usersFile, err := os.Open(usersFile)
+			if err != nil {
+					panic(err)
 			}
-		}
-		waitGroup.Done()
-	}(workQueue, waitGroup)
-}
+			defer usersFile.Close()
+			scanner := bufio.NewScanner(usersFile)
+			for scanner.Scan() {
+					line := scanner.Text()
+					if strings.HasSuffix(line, ",$") {
+							line = strings.TrimSuffix(line, ",$")
+					}
+					workQueue <- line
+			}
+			close(workQueue)
+	}()
 
-waitGroup.Wait()
 
-fmt.Printf("✅ Datas loaded from the file: %d \n", len(datas))
-return context.WithValue(ctx, DataKey, datas)
+
+	for i := 0; i < concurrency; i++ {
+			waitGroup.Add(1)
+			go func(workQueue chan string, waitGroup *sync.WaitGroup) {
+					for entry := range workQueue {
+							parts := strings.Split(entry, ",")
+							data := GetPresenter{
+								ValorConvertido:  parts[0],
+								SimboloMoeda: parts[1],
+							}
+							mutex.Lock()
+							datas = append(datas, data)
+							mutex.Unlock()
+					}
+					waitGroup.Done()
+			}(workQueue, waitGroup)
+	}
+
+	waitGroup.Wait()
+
+	fmt.Printf("✅ Datas loaded from the file: %d \n", len(datas))
+	return context.WithValue(ctx, DataKey, datas)
 }

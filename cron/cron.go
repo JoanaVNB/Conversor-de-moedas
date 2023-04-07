@@ -4,7 +4,7 @@ import (
 	"encoding/csv"
 	"encoding/json"
 	"sync"
-
+	//"exchange/repository/elasticSearch"
 	"exchange/presenter"
 	"exchange/repository"
 	"fmt"
@@ -12,7 +12,7 @@ import (
 	"net/http"
 	"os"
 	"time"
-
+	//"context"
 	"github.com/robfig/cron"
 	"gorm.io/gorm"
 )
@@ -20,7 +20,7 @@ import (
 var dados []presenter.Presenter
 var dadosMutex sync.Mutex 
 
-func AutomatedRoutine(db *gorm.DB) {
+func AutomatedRoutine(db *gorm.DB, value string) {
 	arquivo, err := os.OpenFile("dados.csv", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0644)
 	if err != nil {
 		fmt.Println("Error opening file:", err)
@@ -32,7 +32,7 @@ func AutomatedRoutine(db *gorm.DB) {
 
 	saveData := func() {
 		client := http.Client{}
-		req, err := http.NewRequest(http.MethodGet, "http://localhost:8000/exchange/10/BRL/USD/4.50", nil)
+		req, err := http.NewRequest(http.MethodGet, "http://localhost:8000/exchange/10/BRL/USD", nil)
 		if err != nil {
 				fmt.Println("Error when making HTTP request:", err)
 				return
@@ -72,6 +72,14 @@ func AutomatedRoutine(db *gorm.DB) {
 		}
 		writer.Flush()
 		repository.Delete(db)
+
+		//Elastic Search
+	/* 	ctx := context.Background()
+
+		ctx = elasticSearch.LoadDatasFromFile(ctx)
+		ctx = elasticSearch.ConnectionWithElasticSearch(ctx)
+		elasticSearch.SeachValue(ctx, value) */
+
 		fmt.Println("Dados salvos no arquivo e deletado da base de dados", time.Now().Format("02/01/2006 15:04:05"))
 
 	}

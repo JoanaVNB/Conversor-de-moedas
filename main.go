@@ -2,7 +2,6 @@ package main
 
 import (
 	"exchange/service"
-	"exchange/repository/elasticSearch"
 	"exchange/service/RateAPI"
 	"exchange/domain"
 	"exchange/repository"
@@ -12,7 +11,6 @@ import (
 	"gorm.io/gorm"
 	"github.com/gin-gonic/gin"
 	"log"
-	"context"
 )
 
 func main(){
@@ -52,14 +50,7 @@ func main(){
 	r.GET("/exchange/from/:from", getByFromHandler.GetByFrom)
 	r.DELETE("/exchange/id/:id", deleteHandler.Delete)
 
-	go cron.AutomatedRoutine(DB)
-
-	//Elastic Search
-	ctx := context.Background()
-
-	ctx = elasticSearch.LoadDatasFromFile(ctx)
-	ctx = elasticSearch.ConnectionWithElasticSearch(ctx)
-	elasticSearch.SeachValue(ctx, "2")
+	go cron.AutomatedRoutine(DB, "2")
 
 	r.Run(":8000")
 	
