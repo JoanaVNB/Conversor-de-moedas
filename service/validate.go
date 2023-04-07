@@ -10,13 +10,13 @@ func Validate(ex domain.Exchange) error{
 	valueFrom := fmt.Sprintf("%.2f", ex.ValueFrom)
 	rate := fmt.Sprintf("%.2f", ex.Rate)
 	m := map[int]string{0: valueFrom, 1:ex.From, 2:ex.To, 3:rate}
-	err := ChoiseFX(m); if err != nil{
+	err := ValidateFX(m); if err != nil{
 		return err
 	}
 	return nil
 }
 
-func ChoiseFX(m map[int]string) error {
+func ValidateFX(m map[int]string) error {
 	if m[1] == "BRL" && m[2] == "USD" {
 		return nil
 	}

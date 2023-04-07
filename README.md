@@ -15,9 +15,9 @@ Para isto foi criado o diretório "repository", em que foi utilizado o framework
 * por todos os dados cadastrados; e
 * para detelar.
 
-Para criação de **rotina de armazenamento** de dados, foi utilizado o cron, em que os dados são salvos a partir do retorno da url: http://localhost:8000/exchange/10/BRL/USD/4.50 no arquivo "dados.csv" e são apagados do banco de dados logo após o armazenamento no arquivo, para evitar dados não-realistas.
+Para criação de **rotina de armazenamento** de dados, foi utilizado o cron, em que os dados são salvos, com intervalo de 1 minuto, a partir do retorno da url: http://localhost:8000/exchange/10/BRL/USD/4.50 no arquivo "dados.csv" e são apagados do banco de dados logo após o armazenamento no arquivo, para evitar dados não-realistas.
 
-O armazenamento foi feito a partir do que era esperado como mensagem de retorno:
+O armazenamento no arquivo foi feito a partir do que era esperado como mensagem de retorno:
 
 ```
 {

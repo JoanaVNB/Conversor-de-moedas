@@ -2,6 +2,7 @@ package main
 
 import (
 	"exchange/service"
+	"exchange/service/RateAPI"
 	"exchange/domain"
 	"exchange/repository"
 	"exchange/handlers"
@@ -26,6 +27,9 @@ func main(){
 	createUC := service.NewCreateUseCase(mySQLrepository)
 	createHandler := handlers.NewCreateHandler(createUC)
 
+	createWithRateUC := rate.NewCreateWithRateUseCase(mySQLrepository)
+	createRHandler := handlers.NewCreateRHandler(createWithRateUC)
+
 	getUC := service.NewGetUseCase(mySQLrepository)
 	getHandler := handlers.NewGetHandler(getUC)
 
@@ -40,6 +44,7 @@ func main(){
 
 	r := gin.Default()
 	r.GET("/exchange/:amount/:from/:to/:rate", createHandler.Create)
+	r.GET("/exchange/:amount/:from/:to", createRHandler.Create)
 	r.GET("/exchange/id/:id", getHandler.Get)
 	r.GET("/exchange", getAllHandler.GetAll)
 	r.GET("/exchange/from/:from", getByFromHandler.GetByFrom)
