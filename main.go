@@ -2,6 +2,7 @@ package main
 
 import (
 	"exchange/service"
+	"exchange/repository/elasticSearch"
 	"exchange/service/RateAPI"
 	"exchange/domain"
 	"exchange/repository"
@@ -11,11 +12,12 @@ import (
 	"gorm.io/gorm"
 	"github.com/gin-gonic/gin"
 	"log"
+	"context"
 )
 
 func main(){
 
-	dns := "adm:Pass123!@/store?charset=utf8&parseTime=True&loc=Local"
+	dns := "root:secret@tcp(localhost:3306)/fx?charset=utf8&parseTime=True&loc=Local"
 	DB, err := gorm.Open(mysql.Open(dns), &gorm.Config{})
 	if err != nil {
 			log.Panic("failed to connect to database")
@@ -51,6 +53,14 @@ func main(){
 	r.DELETE("/exchange/id/:id", deleteHandler.Delete)
 
 	go cron.AutomatedRoutine(DB)
+
+	//Elastic Search
+	ctx := context.Background()
+
+	ctx = elasticSearch.LoadDatasFromFile(ctx)
+	ctx = elasticSearch.ConnectionWithElasticSearch(ctx)
+	elasticSearch.SeachValue(ctx, "2")
+
 	r.Run(":8000")
 	
 }	
