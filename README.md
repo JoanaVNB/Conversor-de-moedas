@@ -10,6 +10,7 @@ API Rest para conversão de moedas, com restrição para as seguintes:
 **Banco de dados**: salvar os dados no banco de dados MySQL e criar uma rotina para salvar o dados para consultas futuras:
 Para isto foi criado o diretório "repository", em que foi utilizado o framework ORM de Golang, Gorm, e onde contém os códigos para:
 * armazenar a entidade Exchange;
+* retorna valor cotado, a partir de uma taxa de conversão real ou definida pelo usuário;
 * poder fazer a busca por ID;
 * por moeda a ser convertida;
 * por todos os dados cadastrados; e
@@ -26,23 +27,7 @@ O armazenamento no arquivo foi feito a partir do que era esperado como mensagem 
 }
 ```
 
-Enquanto no banco de dados, dei preferência para salvar mais informações, de acordo com a entidade Exchange:
-
-```
-//ex: converter real para dólar
-type Exchange struct{
-	ID int	`json:"id" gorm:"primary key"`
-	From string `json:"from" gorm:"varchar(3); not null"`//BRL
-	To string `json:"to" gorm:"varchar(3); not null"`//USD
-	SymbolTo string `json:"symbolTo" gorm:"varchar(3); not null"`//R$
-	SymbolFrom string `json:"symboFrom" gorm:"varchar(3); not null"`//$
-	ValueFrom float64 `json:"valueFrom" gorm:"not null"`//100
-	Rate float64 `json:"rate" gorm:"not null"`//5
-	ValueConverted	float64 `json:"valueConverted" gorm:"not null"`//20
-	Converted	string `json:"converted" gorm:"not null"` //R$100 -> $20
-	CreatedAt time.Time  `json:"created_at"`
-}
-```
+Enquanto no banco de dados, dei preferência para salvar mais informações, de acordo com a entidade Exchange.
 
 ## Endpoints
 A URL da requisição deve seguir o seguinte formato:
@@ -50,9 +35,12 @@ A URL da requisição deve seguir o seguinte formato:
 * http://localhost:8000/exchange/10/BRL/USD/4.50
 
 Foram criados os seguintes endpoints:
-* GET -> Fazer a conversão, salvar dados, mostrar retorno:
+* GET -> Faz a conversão, salva dados e mostra retorno a partir de uma taxa de conversão definida:
   "/exchange/:amount/:from/:to/:rate"
   http://localhost:8000/exchange/10/BRL/USD/4.50
+* GET -> Faz a conversão, salva dados e mostra retorno a partir de uma taxa de conversão real:
+  "/exchange/:amount/:from/:to"
+  http://localhost:8000/exchange/10/BRL/USD
 *	GET -> Busca por ID:
   "/exchange/id/:id"
   http://localhost:8000/exchange/id/1
@@ -62,7 +50,7 @@ Foram criados os seguintes endpoints:
 *	GET -> Busca por cadastro que foram convertidos a partir de uma específica moeda:
     "/exchange/from/:from"
     http://localhost:8000/exchange/from/BRL
-*	DELETE -> Deletar cadastro:
+*	DELETE -> Deleta cadastro:
      "/exchange/id/:id"
      http://localhost:8000/exchange/id/1
 
