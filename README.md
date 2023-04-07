@@ -8,7 +8,7 @@ API Rest para conversão de moedas, com restrição para as seguintes:
 
 ## Requisitos:
 **Banco de dados**: salvar os dados no banco de dados MySQL e criar uma rotina para salvar o dados para consultas futuras:
-Para isto foi criado o repositório "repository", em que foi utilizado o framework ORM de Golang, Gorm, e onde contém os códigos para:
+Para isto foi criado o diretório "repository", em que foi utilizado o framework ORM de Golang, Gorm, e onde contém os códigos para:
 * armazenar a entidade Exchange;
 * poder fazer a busca por ID;
 * por moeda a ser convertida;
@@ -66,4 +66,7 @@ Foram criados os seguintes endpoints:
      "/exchange/id/:id"
      http://localhost:8000/exchange/id/1
 
+## Testes
+Para testar, use o comando `go test` no diretório que deseja rodar os testes.
+Os testes foram realizados com o framework GoMock.
 

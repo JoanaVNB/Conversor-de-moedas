@@ -1,5 +1,5 @@
 package handlers
-
+//go:generate mockgen -source=$GOFILE -destination=mock_$GOFILE -package=$GOPACKAGE
 import (
 	"exchange/domain"
 	"exchange/presenter"
@@ -24,8 +24,8 @@ func (ga getByFromHandler) GetByFrom(c *gin.Context){
 
 	from := c.Param("from")
 	exchanges, err := ga.repository.Execute(from, e)
-	if err != nil{
-		c.JSON(400, err)
+	if err != nil {
+		c.JSON(400, "not found")
 		return
 	}
 
