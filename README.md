@@ -6,7 +6,13 @@ API Rest para conversão de moedas, com restrição para as seguintes:
 * De Real para Euro; De Euro para Real;
 * De BTC para Dolar; De BTC para Real;
 
-Utilize docker-compose up -d. Após os containers estarem de pé, execute a aplicação com go run main.go . 
+Utilize `docker-compose up -d`. Após os containers estarem de pé, execute a aplicação com `go run main.go` . 
+
+## Versões
+
+v1 - a conversão é realizada apenas com taxa definida
+v2 - a conversão também é realizada com taxa real do mercado
+v3- implementação do docker
 
 ## Requisitos:
 **Banco de dados**: salvar os dados no banco de dados MySQL e criar uma rotina para salvar o dados para consultas futuras:
