@@ -50,8 +50,9 @@ func main(){
 	r.GET("/exchange/from/:from", getByFromHandler.GetByFrom)
 	r.DELETE("/exchange/id/:id", deleteHandler.Delete)
 
-	go cron.AutomatedRoutine(DB, "2")
+
+
+	go cron.AutomatedRoutine(DB)
 
 	r.Run(":8000")
-	
 }	
