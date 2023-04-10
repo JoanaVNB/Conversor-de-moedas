@@ -14,7 +14,6 @@ require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/elastic/elastic-transport-go/v8 v8.2.0 // indirect
 	github.com/go-playground/validator/v10 v10.11.2 // indirect
-	github.com/jinzhu/gorm v1.9.16 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 )
 

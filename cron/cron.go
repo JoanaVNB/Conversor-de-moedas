@@ -20,7 +20,7 @@ import (
 var dados []presenter.Presenter
 var dadosMutex sync.Mutex 
 
-func AutomatedRoutine(db *gorm.DB, value string) {
+func AutomatedRoutine(db *gorm.DB) {
 	arquivo, err := os.OpenFile("dados.csv", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0644)
 	if err != nil {
 		fmt.Println("Error opening file:", err)
@@ -81,7 +81,6 @@ func AutomatedRoutine(db *gorm.DB, value string) {
 		elasticSearch.SeachValue(ctx, value) */
 
 		fmt.Println("Dados salvos no arquivo e deletado da base de dados", time.Now().Format("02/01/2006 15:04:05"))
-
 	}
  
 	cron.AddFunc("1 * * * *", saveData)
