@@ -1,9 +1,9 @@
 package repository
 
-import "exchange/domain"
+import "exchange/service"
 
 func (r Repository) Delete (id int) (error){
-	var e domain.Exchange
+	var e service.Exchange
 	db := r.DB.First(&e, "id = ?", id).Delete(&e)
 	if db.Error != nil{
 		return db.Error

@@ -2,22 +2,18 @@ package repository
 
 import (
 	"exchange/domain"
-
 	"gorm.io/gorm"
 )
 
-type Driver = *gorm.DB
-
 type Repository struct{
-	DB Driver
-	err error
+	DB *gorm.DB
 }
 
-func NewRepository (DB Driver, err error) *Repository{
-	return &Repository{DB: DB, err: err}
+func NewRepository (DB *gorm.DB) *Repository{
+	return &Repository{DB: DB}
 }
 
-func Delete (DB Driver) {
+func Delete (DB *gorm.DB) {
 	var lastExchange domain.Exchange
 	DB.Last(&lastExchange)
 	DB.Delete(&lastExchange)

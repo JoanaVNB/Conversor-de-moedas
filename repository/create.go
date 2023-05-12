@@ -1,13 +1,13 @@
 package repository
 
 import(
-	"exchange/domain"
+	"exchange/service"
 )
 
-func (r Repository) Create(ex domain.Exchange) (domain.Exchange, error){
+func (r Repository) Create(ex service.Exchange) (service.Exchange, error){
 	db := r.DB.Create(&ex)
 	if db.Error != nil{
-		return domain.Exchange{}, db.Error
+		return service.Exchange{}, db.Error
 	}
 	return ex, nil
 }

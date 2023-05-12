@@ -1,11 +1,11 @@
 package repository
 
-import "exchange/domain"
+import "exchange/service"
 
-func (r Repository) Get(id int, e domain.Exchange) (domain.Exchange, error){
+func (r Repository) Get(id int, e service.Exchange) (service.Exchange, error){
 	db := r.DB.First(&e, "id = ?", id)
 	if db.Error != nil{
-		return domain.Exchange{}, db.Error
+		return service.Exchange{}, db.Error
 	}
 	return e, nil
 }

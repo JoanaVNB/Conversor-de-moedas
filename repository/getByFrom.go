@@ -1,11 +1,11 @@
 package repository
 
-import "exchange/domain"
+import "exchange/service"
 
-func (r Repository) GetByFrom(from string, e []domain.Exchange) ([]domain.Exchange, error){
+func (r Repository) GetByFrom(from string, e []service.Exchange) ([]service.Exchange, error){
 	db := r.DB.Where("`from` = ?", from).Find(&e)
 	if db.Error != nil { 
-		return []domain.Exchange{{
+		return []service.Exchange{{
 					From:           "not found",
 		}}, db.Error
 	}
