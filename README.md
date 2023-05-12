@@ -13,6 +13,7 @@ Utilize `docker-compose up -d`. Após os containers estarem de pé, execute a ap
 * v1 - a conversão é realizada apenas com taxa definida
 * v2 - a conversão também é realizada com taxa real do mercado
 * v3- implementação do docker
+* v4 - sem docker, e domain sem utilidade(tá certo isso?)
 
 ## Requisitos:
 **Banco de dados**: salvar os dados no banco de dados MySQL e criar uma rotina para salvar o dados para consultas futuras:
