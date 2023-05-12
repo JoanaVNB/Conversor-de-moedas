@@ -11,18 +11,22 @@ import (
 	"gorm.io/gorm"
 	"github.com/gin-gonic/gin"
 	"log"
+	"fmt"
 )
 
 func main(){
 
-	dns := "root:secret@tcp(localhost:3306)/fx?charset=utf8&parseTime=True&loc=Local"
+	user := "adm"
+	password := "Pass123!"
+	database := "store"
+	dns := fmt.Sprintf("%s:%s@/%s?charset=utf8&parseTime=True&loc=Local", user, password, database)
 	DB, err := gorm.Open(mysql.Open(dns), &gorm.Config{})
 	if err != nil {
 			log.Panic("failed to connect to database")
 	}
 	DB.AutoMigrate(&domain.Exchange{})
 
-	mySQLrepository := repository.NewRepository(DB, err)
+	mySQLrepository := repository.NewRepository(DB)
 
 	createUC := service.NewCreateUseCase(mySQLrepository)
 	createHandler := handlers.NewCreateHandler(createUC)
