@@ -4,7 +4,6 @@ import (
 	"encoding/csv"
 	"encoding/json"
 	"sync"
-	//"exchange/repository/elasticSearch"
 	"exchange/presenter"
 	"exchange/repository"
 	"fmt"
@@ -12,7 +11,6 @@ import (
 	"net/http"
 	"os"
 	"time"
-	//"context"
 	"github.com/robfig/cron"
 	"gorm.io/gorm"
 )
@@ -72,13 +70,6 @@ func AutomatedRoutine(db *gorm.DB) {
 		}
 		writer.Flush()
 		repository.Delete(db)
-
-		//Elastic Search
-	/* 	ctx := context.Background()
-
-		ctx = elasticSearch.LoadDatasFromFile(ctx)
-		ctx = elasticSearch.ConnectionWithElasticSearch(ctx)
-		elasticSearch.SeachValue(ctx, value) */
 
 		fmt.Println("Dados salvos no arquivo e deletado da base de dados", time.Now().Format("02/01/2006 15:04:05"))
 	}
