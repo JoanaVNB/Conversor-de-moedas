@@ -1,7 +1,5 @@
 package rate
 
-//import "exchange/domain"
-
 //Função para escolher para qual função indicar
 func ChoiseFX(amount float64, from string, to string) (result float64, rate float64) {
 	if from == "BRL" && to == "USD" {

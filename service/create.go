@@ -1,15 +1,11 @@
 package service
 
-import (
-	"exchange/domain"
-)
-
 type CreateUseCase interface{
-	Execute (domain.Exchange) (domain.Exchange, error)
+	Execute (Exchange) (Exchange, error)
 }
 
 type CreateRepository interface {
-	Create(domain.Exchange) (domain.Exchange, error)
+	Create(Exchange) (Exchange, error)
 }
 
 type createRepository struct{
@@ -22,14 +18,14 @@ func NewCreateUseCase (createRepo CreateRepository) *createRepository{
 	}
 }
 
-func (c createRepository) Execute(amount float64, from string, to string, rate float64) (ex domain.Exchange, err error){
-	ex = GetConverted(amount, from, to, rate)
+func (c createRepository) Execute(amount float64, from string, to string, rate float64) (ex Exchange, err error){
+	ex = GetConverted(amount, from, to, rate) //converte para a struct Exchange do service
 	err = Validate(ex); if err != nil{
-		return domain.Exchange{}, err
+		return Exchange{}, err
 	}
 	exCreated, err := c.createRepo.Create(ex)
 	if err != nil{
-		return domain.Exchange{}, err
+		return Exchange{}, err
 	}
 	return exCreated, nil
 }

@@ -1,13 +1,11 @@
 package service
 
-import "exchange/domain"
-
 type GetByFromUseCase interface {
-	Execute([]domain.Exchange) ([]domain.Exchange, error)
+	Execute([]Exchange) ([]Exchange, error)
 }
 
 type GetByFromRepository interface {
-	GetByFrom(string, []domain.Exchange) ([]domain.Exchange, error)
+	GetByFrom(string, []Exchange) ([]Exchange, error)
 }
 
 type getByFromRepository struct{
@@ -20,10 +18,10 @@ func NewGetByFromUseCase (getByFromRepo GetByFromRepository) *getByFromRepositor
 	}
 }
 
-func (ga getByFromRepository) Execute(from string, e []domain.Exchange) ([]domain.Exchange, error){
+func (ga getByFromRepository) Execute(from string, e []Exchange) ([]Exchange, error){
 	exchanges, err := ga.getByFromRepo.GetByFrom(from, e)
 	if err != nil{
-		return []domain.Exchange{}, err
+		return []Exchange{}, err
 	}
 	return exchanges, nil
 }

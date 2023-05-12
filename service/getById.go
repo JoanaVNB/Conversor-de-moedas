@@ -1,13 +1,11 @@
 package service
 
-import "exchange/domain"
-
 type GetUseCase interface {
-	Execute(int, domain.Exchange) (domain.Exchange, error)
+	Execute(int, Exchange) (Exchange, error)
 }
 
 type GetRepository interface {
-	Get(int, domain.Exchange) (domain.Exchange, error)
+	Get(int, Exchange) (Exchange, error)
 }
 
 type getRepository struct{
@@ -20,10 +18,10 @@ func NewGetUseCase (getRepo GetRepository) *getRepository{
 	}
 }
 
-func (g getRepository) Execute(id int, u domain.Exchange) (domain.Exchange, error){
+func (g getRepository) Execute(id int, u Exchange) (Exchange, error){
 	user, err := g.getRepo.Get(id, u)
 	if err != nil{
-		return domain.Exchange{}, err
+		return Exchange{}, err
 	}
 	user.ID = u.ID
 	return user, nil

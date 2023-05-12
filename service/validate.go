@@ -2,11 +2,10 @@ package service
 
 import (
 	"errors"
-	"exchange/domain"
 	"fmt"
 )
 
-func Validate(ex domain.Exchange) error{
+func Validate(ex Exchange) error{
 	valueFrom := fmt.Sprintf("%.2f", ex.ValueFrom)
 	rate := fmt.Sprintf("%.2f", ex.Rate)
 	m := map[int]string{0: valueFrom, 1:ex.From, 2:ex.To, 3:rate}

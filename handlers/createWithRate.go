@@ -1,7 +1,7 @@
 package handlers
 //go:generate mockgen -source=$GOFILE -destination=mock_$GOFILE -package=$GOPACKAGE
 import (
-	"exchange/domain"
+	"exchange/service"
 	"log"
 	"strconv"
 	"exchange/presenter"
@@ -9,7 +9,7 @@ import (
 )
 
 type CreateRHandler interface {
-	Execute(float64, string, string) (domain.Exchange, error)
+	Execute(float64, string, string) (service.Exchange, error)
 }
 
 type createRHandler struct{
@@ -27,7 +27,7 @@ func (cr createRHandler) Create(c *gin.Context) {
 
 	ex, err := cr.repository.Execute(amount, from, to)
 	if err != nil{
-		log.Fatal("error to create")
+		c.JSON(400, err)
 	}
 
 	presenter := *presenter.PresenterFX(ex)

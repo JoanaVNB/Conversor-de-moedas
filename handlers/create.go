@@ -1,15 +1,14 @@
 package handlers
 //go:generate mockgen -source=$GOFILE -destination=mock_$GOFILE -package=$GOPACKAGE
 import (
-	"exchange/domain"
-	"log"
+	"exchange/service"
 	"strconv"
 	"exchange/presenter"
 	"github.com/gin-gonic/gin"
 )
 
 type CreateHandler interface {
-	Execute(float64, string, string, float64) (domain.Exchange, error)
+	Execute(float64, string, string, float64) (service.Exchange, error)
 }
 
 type createHandler struct{
@@ -28,7 +27,7 @@ func (cr createHandler) Create(c *gin.Context) {
 
 	ex, err := cr.repository.Execute(amount, from, to, rate)
 	if err != nil{
-		log.Fatal("error to create")
+		c.JSON(400, err)
 	}
 
 	presenter := *presenter.PresenterFX(ex)

@@ -1,7 +1,7 @@
 package handlers
 //go:generate mockgen -source=$GOFILE -destination=mock_$GOFILE -package=$GOPACKAGE
 import (
-	"exchange/domain"
+	"exchange/service"
 	"exchange/presenter"
 	"strconv"
 
@@ -9,7 +9,7 @@ import (
 )
 
 type GetHandler interface {
-	Execute(int, domain.Exchange) (domain.Exchange, error)
+	Execute(int, service.Exchange) (service.Exchange, error)
 }
 
 type getHandler struct{
@@ -21,7 +21,7 @@ func NewGetHandler (repository GetHandler) *getHandler{
 }
 
 func (g getHandler) Get(c *gin.Context) {
-	var u domain.Exchange
+	var u service.Exchange
 
 	id, _ := strconv.Atoi(c.Param("id"))
 	ex, err := g.repository.Execute(id, u)

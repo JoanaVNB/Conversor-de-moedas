@@ -1,14 +1,14 @@
 package handlers
 //go:generate mockgen -source=$GOFILE -destination=mock_$GOFILE -package=$GOPACKAGE
 import (
-	"exchange/domain"
+	"exchange/service"
 	"exchange/presenter"
 
 	"github.com/gin-gonic/gin"
 )
 
 type GetByFromHandler interface {
-	Execute(string, []domain.Exchange) ([]domain.Exchange, error)
+	Execute(string, []service.Exchange) ([]service.Exchange, error)
 }
 
 type getByFromHandler struct{
@@ -20,7 +20,7 @@ func NewGetByFromHandler (repository GetByFromHandler) *getByFromHandler{
 }
 
 func (ga getByFromHandler) GetByFrom(c *gin.Context){
-	var e []domain.Exchange
+	var e []service.Exchange
 
 	from := c.Param("from")
 	exchanges, err := ga.repository.Execute(from, e)

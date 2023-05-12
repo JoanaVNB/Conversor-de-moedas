@@ -1,7 +1,6 @@
 package service
 
 import (
-	"exchange/domain"
 	"fmt"
 )
 
@@ -19,13 +18,13 @@ func GetCurrencySymbol(code string) (converted string, err error){
 	return symbol, nil
 }
 
-func GetConverted(amount float64, from string, to string, rate float64) (domain.Exchange){
+func GetConverted(amount float64, from string, to string, rate float64) Exchange{
 	symbolFrom, _ := GetCurrencySymbol(from)
 	symbolTo, _ := GetCurrencySymbol(to)
 	valueConverted := amount / rate
 	converted := fmt.Sprintf("%s%.2f->%s%.2f", symbolFrom, amount, symbolTo, valueConverted)
 
-	ex := domain.Exchange{
+	ex := Exchange{
 		From:           from,
 		To:             to,
 		SymbolTo:       symbolTo,

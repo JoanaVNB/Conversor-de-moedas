@@ -1,13 +1,11 @@
 package service
 
-import "exchange/domain"
-
 type GetAllUseCase interface {
-	Execute([]domain.Exchange) ([]domain.Exchange, error)
+	Execute([]Exchange) ([]Exchange, error)
 }
 
 type GetAllRepository interface {
-	GetAll([]domain.Exchange) ([]domain.Exchange, error)
+	GetAll([]Exchange) ([]Exchange, error)
 }
 
 type getAllRepository struct{
@@ -20,10 +18,10 @@ func NewGetAllUseCase (getAllRepo GetAllRepository) *getAllRepository{
 	}
 }
 
-func (ga getAllRepository) Execute(e []domain.Exchange) ([]domain.Exchange, error){
+func (ga getAllRepository) Execute(e []Exchange) ([]Exchange, error){
 	exchanges, err := ga.getAllRepo.GetAll(e)
 	if err != nil{
-		return []domain.Exchange{}, err
+		return []Exchange{}, err
 	}
 	return exchanges, nil
 }
